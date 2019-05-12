@@ -5,19 +5,18 @@
     <script src="http://d3js.org/d3.v4.min.js"></script>
     <script src="http://code.jquery.com/jquery-1.10.2.js"></script>
     <script src="http://code.jquery.com/ui/1.11.1/jquery-ui.js"></script>
-
+    <script src="code.js"></script>
     <div class="container">
       <div class="container-wrapper">
         <div class="left-side-container">
-          <!-- <select id="year-select" class="form-control">
-          <option id="selected" selected value="all">Choose an Iconic Game</option>
-          <option id="selected" value="3/28/03">55 vs Michael Jordan</option>
-          <option id="selected" value="12/20/05">62 vs Dallas</option>
-          <option id="selected" value="1/22/06">81-Point Game</option>
-          <option id="selected" value="4/13/16">Last Game</option>
-          </select> -->
-
-
+          <div class="row-form">
+            <p class="form-tags">Season:</p>
+            <select id="season-select" class="form-control"></select>
+          </div>
+          <div class="row-form">
+            <p class="form-tags">Opponent:</p>
+            <select id="opponent-select" class="form-control"></select>
+          </div>
         </div>
         <div class='right-side-container'>
           <div id="chart-area"></div>
