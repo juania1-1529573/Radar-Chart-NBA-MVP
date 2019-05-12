@@ -1,0 +1,72 @@
+.container {
+  display: flex;
+  min-width: 1150px;
+  min-height: 700px;
+  justify-content: center;
+  align-items: center;
+  margin-top: 30px;
+}
+
+.container-wrapper{
+  min-width: 1150px;
+  min-height: 700px;
+  background-color: black;
+  display: flex;
+  box-shadow: 7px 9px 25px 1px rgba(0,0,0,0.74);
+}
+
+.left-side-container{
+  min-width: 300px;
+  min-height: 100%;
+  border-radius: 2%;
+  display: flex;
+  justify-content: center;
+  align-content: center;
+}
+
+.right-side-container{
+  min-width: 870px;
+  background-color: black;
+  min-height: 90vh;
+  border-radius: 2%;
+}
+
+#chart-area {
+  background: url("bball.png") no-repeat;
+  background-size: auto;
+  width: 870px;
+  background-color: black;
+}
+
+/*  */
+/*  */
+/* CSS Reset */
+/*  */
+/*  */
+html, body, header, nav, h1, a,
+ul, li, strong, main, button, i,
+section, img, div, h2, p, form,
+fieldset, label, input, textarea,
+span, article, footer, time, small {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  outline: 0;
+  font: inherit;
+  color: inherit;
+  text-align: inherit;
+  text-decoration: inherit;
+  vertical-align: inherit;
+  box-sizing: inherit;
+  background: transparent;
+}
+
+ul {
+  list-style: none;
+}
+
+img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
