@@ -1,8 +1,4 @@
-body {
-	background: #151526; /* fallback for old browsers */
-	font-family: helvetica;
-	color: white;
-}
+
 
 .container {
   display: flex;

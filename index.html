@@ -1,27 +1,49 @@
 <!DOCTYPE html>
-<meta charset="utf-8">
-  <body>
-    <link href="style.css" rel="stylesheet">
-    <script src="http://d3js.org/d3.v4.min.js"></script>
-    <script src="http://code.jquery.com/jquery-1.10.2.js"></script>
-    <script src="http://code.jquery.com/ui/1.11.1/jquery-ui.js"></script>
-    <script src="code.js"></script>
-    <div class="container">
-      <div class="container-wrapper">
-        <div class="left-side-container">
-          <div class="row-form">
-            <p class="form-tags">Season:</p>
-            <select id="season-select" class="form-control"></select>
-          </div>
-          <div class="row-form">
-            <p class="form-tags">Opponent:</p>
-            <select id="opponent-select" class="form-control"></select>
-          </div>
-        </div>
-        <div class='right-side-container'>
-          <div id="chart-area"></div>
-        </div>
-      </div>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/ >
+  <title>Smoothed D3.js Radar Chart</title>
+
+  <!-- Google fonts -->
+  <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300' rel='stylesheet' type='text/css'>
+  <link href='https://fonts.googleapis.com/css?family=Raleway' rel='stylesheet' type='text/css'>
+
+  <!-- D3.js -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.min.js" charset="utf-8"></script>
+  
+  <style>
+    body {
+      font-family: 'Open Sans', sans-serif;
+      font-size: 11px;
+      font-weight: 300;
+      fill: #242424;
+      text-align: center;
+      text-shadow: 0 1px 0 #fff, 1px 0 0 #fff, -1px 0 0 #fff, 0 -1px 0 #fff;
+      cursor: default;
+    }
+    
+    .legend {
+      font-family: 'Raleway', sans-serif;
+      fill: #333333;
+    }
+    
+    .tooltip {
+      fill: #333333;
+    }
+  </style>
+
+</head>
+<body>
+    <div>
+        <h1> Default chart - Dataset 1</h1>
+        <div class="radarChart1"></div>
     </div>
-  </body>
+    <div>
+        <h1> Default chart - Dataset 1</h1>
+        <div class="radarChart5"></div>
+    </div> 
+  <div class="radarChart"></div>
+  <script src="SecondRadar.js"></script>
+  <script src="code.js"></script>	
+</body>
 </html>

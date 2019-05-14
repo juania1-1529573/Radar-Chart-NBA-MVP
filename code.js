@@ -1,59 +1,80 @@
-var width = 870;
-var height = 700;
+      /* Radar chart design created by Nadieh Bremer - VisualCinnamon.com */
+      
+			////////////////////////////////////////////////////////////// 
+			//////////////////////// Set-Up ////////////////////////////// 
+			////////////////////////////////////////////////////////////// 
 
-var dataset;
+			var margin = {top: 100, right: 100, bottom: 100, left: 100},
+				width = Math.min(700, window.innerWidth - 10) - margin.left - margin.right,
+				height = Math.min(width, window.innerHeight - margin.top - margin.bottom - 20);
+					
+			////////////////////////////////////////////////////////////// 
+			////////////////////////// Data ////////////////////////////// 
+      ////////////////////////////////////////////////////////////// 
 
- //start with the type set to all, changes this variable everytime the dropdown for type is changed
-var season = "all";
-var opponent = "all";
+          var data2 = 
+					  [//iPhone
+						{"PTS":32,
+						"3P%":0.391,
+						"FG%":0.503,
+						"Steals":1.3,
+						"BLK":0.7,
+						"ASSISTS":5.5,
+						"REBOUNDS":7.4		
+            },
+            {"PTS":23.8,
+						"3P%":0.443,
+						"FG%":0.487,
+						"Steals":2,
+						"BLK":0.1,
+						"ASSISTS":7.7,
+						"REBOUNDS":4.3		
+            },
+            {"PTS":36.1,
+						"3P%":0.368,
+						"FG%":0.442,
+						"Steals":2,
+						"BLK":0.7,
+						"ASSISTS":7.5,
+						"REBOUNDS":6.6		
+            }
+          ];
 
-d3.csv("data.csv", function(error, shots) {
-//read in the data
-  if (error) return console.warn(error);
-     shots.forEach(function(d) {
-     	d.loc_x = +d.loc_x;
-     	d.loc_y = +d.loc_y;
-      d.shot_made_flag = +d.shot_made_flag;
-     	d.season = d.season;
-     	d.opponent = d.opponent;
-  });
-//dataset is the full dataset -- maintain a copy of this at all times
-  dataset = shots;
-//all the data is now loaded, so draw the initial vis
-  drawVis(dataset);
-});
+      
+      var fields = [
+          "PTS",
+          "3P%",
+          "FG%",
+          "Steals",
+          "BLK",
+          "ASSISTS",
+          "REBOUNDS"
+      ];
 
-const x = d3
-      .scaleLog()
-      .domain([
-          0,
-          d3.max(dataset, function(d) {
-              return d.loc_x;
-          }),
-      ])
-      .range([0, width]);
-  const y = d3
-      .scaleLinear()
-      .domain([
-          0,
-          d3.max(dataset, function(d) {
-              return d.loc_y;
-          }),
-      ])
-      .range([height, 0]);
-  const color = d3
-      .scaleOrdinal()
-      .domain(['Made', 'Miss'])
-      .range(['Blue', 'Red']);
+      var scales = {"PTS":40,
+      "3P%":.5,
+      "FG%":.6,
+      "Steals":3,
+      "BLK":2,
+      "ASSISTS":11,
+      "REBOUNDS":13};
 
-function drawVis(dataset) {
-  var g = d3
-        .select('#chart-area')
-        .append('svg')
-        .attr('width', width)
-        .attr('height', height)
-        .append('g');
-  
+      var scalesAndAxes = {};
+      fields.forEach(function (field){
 
+        var o = {};
+        o.scale = d3.scale.linear().domain([0, scales[field]]);
+        o.axis = d3.svg.axis()
+          .scale(o.scale)
+          .tickFormat(function(d, i){ if(i != 0){return d + "";} else {return "";}  })
+          .orient("bottom");
 
-}
+        scalesAndAxes[field] = o;
+      });
+
+      var radarChartOptions = {
+        fields: fields,
+        scalesAndAxes: scalesAndAxes,
+      };
+      RadarChart(".radarChart5", data2, radarChartOptions);
+      
