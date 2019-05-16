@@ -59,6 +59,7 @@
         let nameCheckBoxContainer = document.getElementById("name-checkbox-container");
         let checkBoxes = data.map((row) => {
           let checkBoxContainer = document.createElement("div");
+					checkBoxContainer.setAttribute('style','padding-bottom: 5px;');
           let checkBox = document.createElement("input");
           let label = document.createElement("span");
           checkBox.setAttribute("type", "checkbox");
@@ -94,5 +95,3 @@
 
       createNameCheckBoxes(data);
       RadarChart(".radarChart", data, radarChartOptions);
-
-      

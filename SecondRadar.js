@@ -9,7 +9,6 @@
  *
  * Released under the MIT license.
  */
-
 function RadarChart(id, data, options) {
     var cfg = {
       w: 600, //Width of the circle
@@ -29,21 +28,21 @@ function RadarChart(id, data, options) {
       fields: false,
       scalesAndAxes: false,
     };
-  
+
     //Put all of the options into a variable called cfg
     if('undefined' !== typeof options){
       for(var i in options){
         if('undefined' !== typeof options[i]){ cfg[i] = options[i]; }
       }
     }
-  
+
     // If fields specified, filter and sort data to fields
     if (cfg.fields != false){
       data = subsetAndSortData(data, cfg.fields);
     } else {
       cfg.fields = Object.keys(data[0]);
     }
-  
+
     // Auto-generate scales and axes from given data extents or use given ones.
     var autos;
     if (cfg.scalesAndAxes === false){
@@ -53,7 +52,7 @@ function RadarChart(id, data, options) {
     }
     var scales = cfg.fields.map(function(k){ return autos[k].scale; });
     var axes = cfg.fields.map(function(k){ return autos[k].axis; });
-  
+
     // Rearrange data to an array of arrays
     data = data.map(function(row){
       var newRow = cfg.fields.map(function(key) {
@@ -61,11 +60,11 @@ function RadarChart(id, data, options) {
       });
       return newRow;
     });
-  
+
     var total = cfg.fields.length,            //The number of different axes
       radius = Math.min(cfg.w/2, cfg.h/2),    //Radius of the outermost circle
       angleSlice = Math.PI * 2 / total;       //The width in radians of each "slice"
-  
+
     // Update ranges of scales to match radius.
     scales = scales.map(function(i){
       // This is gross - no other way to get ordinal scales to behave correctly.
@@ -75,38 +74,38 @@ function RadarChart(id, data, options) {
           return i.range([0, radius]);
       }
     });
-  
+
     /////////////////////////////////////////////////////////
     //////////// Create the container SVG and g /////////////
     /////////////////////////////////////////////////////////
-  
+
     //Remove whatever chart with the same id/class was present before
     d3.select(id).select("svg").remove();
-  
+
     //Initiate the radar chart SVG
     var svg = d3.select(id).append("svg")
       .attr("width",  cfg.w + cfg.margin.left + cfg.margin.right)
       .attr("height", cfg.h + cfg.margin.top + cfg.margin.bottom)
       .attr("class", "radar"+id);
-  
+
     //Append a g element
     var g = svg.append("g")
       .attr("transform", "translate(" + (cfg.w/2 + cfg.margin.left) + "," + (cfg.h/2 + cfg.margin.top) + ")");
-  
+
     /////////////////////////////////////////////////////////
     //////////////////// Draw the axes //////////////////////
     /////////////////////////////////////////////////////////
-  
+
     //Wrapper for the grid & axes
     var axisGrid = g.append("g").attr("class", "axisWrapper");
-  
+
     //Create the straight lines radiating outward from the center
     var axis = axisGrid.selectAll(".axis")
       .data(cfg.fields)
       .enter()
       .append("g")
       .attr("class", "axis");
-  
+
     //Append the axes
     var axisGroup = axis.append("g")
       .attr("transform", function(d, i){ return "rotate(" + (180 / Math.PI * (i * angleSlice) + 270) + ")"; })
@@ -117,7 +116,7 @@ function RadarChart(id, data, options) {
         }
         ax(d3.select(this));
       });
-  
+
     //Append axis category labels
     if (cfg.axisLabels === true){
         axisGroup.append("text")
@@ -129,28 +128,28 @@ function RadarChart(id, data, options) {
         .text(function(d){return d;})
         .call(wrap, cfg.wrapWidth);
     }
-  
+
     /////////////////////////////////////////////////////////
     ///////////// Draw the radar chart blobs ////////////////
     /////////////////////////////////////////////////////////
-  
-  
+
+
     //The radial line function
     var radarLine = d3.svg.line.radial()
       .interpolate("linear-closed")
       .radius(function(d, i) { return scales[i](d.value); })
       .angle(function(d,i) {  return i*angleSlice; });
-  
+
     if(cfg.roundStrokes) {
       radarLine.interpolate("cardinal-closed");
     }
-  
+
     //Create a wrapper for the blobs
     var blobWrapper = g.selectAll(".radarWrapper")
       .data(data)
       .enter().append("g")
       .attr("class", "radarWrapper");
-  
+
     //Append the backgrounds
     blobWrapper
       .append("path")
@@ -178,7 +177,7 @@ function RadarChart(id, data, options) {
             .style("fill-opacity", cfg.opacityArea);
         }
       });
-  
+
     //Create the outlines
     blobWrapper.append("path")
       .attr("class", "radarStroke")
@@ -186,7 +185,7 @@ function RadarChart(id, data, options) {
       .style("stroke-width", cfg.strokeWidth + "px")
       .style("stroke", function(d,i) { return cfg.color(i); })
       .style("fill", "none");
-  
+
     //Append the circles
     blobWrapper.selectAll(".radarCircle")
       .data(function(d,i) { return d; })
@@ -197,19 +196,19 @@ function RadarChart(id, data, options) {
       .attr("cy", function(d,i){ return scales[i](d.value) * Math.sin(angleSlice*i - Math.PI/2); })
       .style("fill", function(d,i,j) { return cfg.color(j); })
       .style("fill-opacity", 0.8);
-  
+
     /////////////////////////////////////////////////////////
     //////// Append invisible circles for tooltip ///////////
     /////////////////////////////////////////////////////////
-  
+
     if (cfg.hover === true){
-  
+
       //Wrapper for the invisible circles on top
       var blobCircleWrapper = g.selectAll(".radarCircleWrapper")
         .data(data)
         .enter().append("g")
         .attr("class", "radarCircleWrapper");
-  
+
       //Append a set of invisible circles on top for the mouseover pop-up
       blobCircleWrapper.selectAll(".radarInvisibleCircle")
         .data(function(d,i) { return d; })
@@ -223,7 +222,7 @@ function RadarChart(id, data, options) {
         .on("mouseover", function(d,i) {
           newX =  parseFloat(d3.select(this).attr('cx')) - 10;
           newY =  parseFloat(d3.select(this).attr('cy')) - 10;
-  
+
           tooltip
             .attr('x', newX)
             .attr('y', newY)
@@ -235,17 +234,17 @@ function RadarChart(id, data, options) {
           tooltip.transition().duration(200)
             .style("opacity", 0);
         });
-  
+
       //Set up the small tooltip for when you hover over a circle
       var tooltip = g.append("text")
         .attr("class", "tooltip")
         .style("opacity", 0);
   }
-  
+
     /////////////////////////////////////////////////////////
     /////////////////// Helper Function /////////////////////
     /////////////////////////////////////////////////////////
-  
+
     //Taken from http://bl.ocks.org/mbostock/7555321
     //Wraps SVG text
     function wrap(text, width) {
@@ -260,7 +259,7 @@ function RadarChart(id, data, options) {
           x = text.attr("x"),
           dy = parseFloat(text.attr("dy")),
           tspan = text.text(null).append("tspan").attr("x", x).attr("y", y).attr("dy", dy + "em");
-  
+
         while (word = words.pop()) {
           line.push(word);
           tspan.text(line.join(" "));
@@ -273,10 +272,10 @@ function RadarChart(id, data, options) {
         }
       });
     }//wrap
-  
+
   }//RadarChart
-  
-  
+
+
   /*
    * Given a dataset which is an array of objects (that all have the same
    * fields), filter and sort those fields
@@ -292,58 +291,58 @@ function RadarChart(id, data, options) {
     });
     return data;
   }
-  
+
   function autoScalesAxes(data){
-  
+
     var ret = {};
     var fieldNames = Object.keys(data[0]);
-  
+
     fieldNames.map(function(i){
-  
+
       // Get all data for axis
       var axisData = data.map(function(row){
         return row[i];
       });
-  
+
       var scale;
       var axis;
-  
+
       // Autogenerate a scale
       if ((typeof axisData[0] === "string") || (typeof axisData[0] === "boolean")){
-  
+
         // Non-numeric things get an ordinal scale
         var uniqueValues = d3.map(data, function(a){return a[i]; }).keys();
         uniqueValues.unshift("  "); // Padding, so it doesn't start from the center
-  
+
         scale = d3.scale.ordinal()
           .domain(uniqueValues);
-  
+
         axis = d3.svg.axis()
           .scale(scale)
           .tickValues(uniqueValues)
           .orient("bottom");
-  
+
       } else {
-  
+
           // Numeric values get a linear scale
         var extent = d3.extent(data, function(a){return a[i];});
-  
+
         scale = d3.scale.linear()
           .domain(extent);
-  
+
         axis = d3.svg.axis()
           .scale(scale)
           .tickFormat(function(d, i){ if(i != 0){return d + "";} else {return "";}  })
           .orient("bottom");
-  
+
       }
-  
+
       ret[i] = {};
       ret[i].scale = scale;
       ret[i].axis = axis;
-  
+
     });
-  
+
     return ret;
-  
+
   }
