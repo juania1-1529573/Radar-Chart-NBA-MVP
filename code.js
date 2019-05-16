@@ -13,7 +13,7 @@
       //////////////////////////////////////////////////////////////
 
       var data2 =[
-        {"NAME":"Kevin Durant", "YEAR":"2013-14", "PTS":32,"3P%":0.391,"FG%":0.503,"Steals":1.3,"BLK":0.7,"ASSISTS":5.5,"REBOUNDS":7.4},//Kevin Durant(2013-14)
+        {"NAME":"Kevin Durant", "YEAR":"2013-14", "Display Name":"", "PTS":32,"3P%":0.391,"FG%":0.503,"Steals":1.3,"BLK":0.7,"ASSISTS":5.5,"REBOUNDS":7.4},//Kevin Durant(2013-14)
         {"NAME":"Stephen Curry", "YEAR":"2014-15", "PTS":23.8,"3P%":0.443,"FG%":0.487,"Steals":2,"BLK":0.2,"ASSISTS":7.7,"REBOUNDS":4.3},//Stephen Curry(2014-15)
         {"NAME":"Stephen Curry", "YEAR":"2015-16", "PTS":30.1,"3P%":0.454,"FG%":0.504,"Steals":2.1,"BLK":0.2,"ASSISTS":6.7,"REBOUNDS":5.4},//Stephen Curry(2015-16)
         {"NAME":"Russell Westbrook", "YEAR":"2016-17", "PTS":31.6,"3P%":0.343,"FG%":0.425,"Steals":1.6,"BLK":0.4,"ASSISTS":10.4,"REBOUNDS":10.7},//Russell Westbrook(2016-17)
@@ -61,6 +61,15 @@
         let label = document.createElement("span");
         checkBox.setAttribute("type", "checkbox");
         checkBox.value = row.NAME === "James Harden" ? row.NAME + " " + row.YEAR : row.NAME;
+        checkBox.checked = true;
+        checkBox.classList.add("name-checkbox");
+        checkBox.addEventListener('change', (event) => {
+          if (event.target.checked) {
+            refilterData();
+          } else {
+            refilterData();
+          }
+        })
         label.innerHTML = checkBox.value;
         checkBoxContainer.appendChild(checkBox);
         checkBoxContainer.appendChild(label);
@@ -72,4 +81,14 @@
         fields: fields,
         scalesAndAxes: scalesAndAxes,
       };
+
+      function refilterData() {
+        let checkedBoxes = document.querySelectorAll("input.name-checkbox:checked");
+        console.log(checkBoxes);
+        let filteredData = data2.filter((row) => row)
+        //RadarChart(".radarChart5", data2, radarChartOptions);
+      }
+
       RadarChart(".radarChart5", data2, radarChartOptions);
+
+      
