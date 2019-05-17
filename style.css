@@ -42,6 +42,12 @@ input[type=checkbox] {
 }
 
 .legend-color {
-  width: 10px; height: 10px; margin-left: 5px; 
-       display: inline-block; 
+  width: 10px; 
+  height: 10px; 
+  margin-left: 5px; 
+  display: inline-block; 
+}
+
+.selected-player {
+  font-weight: 1000;
 }

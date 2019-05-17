@@ -1,6 +1,6 @@
 /*
  * Modified the following radar chart by Mali Akmanalp to fit our dataset.
- * Added legends as well ...
+ * Added legends for colors and highlighting for the selected player's name.
  *
  * Configurable-axis radar chart that supports different scales per axis
  * By Mali Akmanalp
@@ -185,17 +185,20 @@ function RadarChart(id, data, options) {
             .transition().duration(200)
             .style("fill-opacity", 0.7);
         }
-        // console.log(fullDataset);
-        // console.log(i);
-        // console.log(d);
+        let checkedBoxesInput = Array.from(document.querySelectorAll("input.name-checkbox:checked"));
+        let legendNames = checkedBoxesInput.map((input) => input.parentNode.querySelector("span"));
+        legendNames[i].classList.add("selected-player");
       })
-      .on('mouseout', function(){
+      .on('mouseout', function(d,i){
         if (cfg.hover === true){
           //Bring back all blobs
           d3.selectAll(".radarArea")
             .transition().duration(200)
             .style("fill-opacity", cfg.opacityArea);
         }
+        let checkedBoxesInput = Array.from(document.querySelectorAll("input.name-checkbox:checked"));
+        let legendNames = checkedBoxesInput.map((input) => input.parentNode.querySelector("span"));
+        legendNames[i].classList.remove("selected-player");
       });
 
     //Create the outlines
